@@ -1,0 +1,32 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <parameters>
+        <parameter key="zenstruck_queue.command.class">Zenstruck\Queue\Console\ListenCommand</parameter>
+        <parameter key="zenstruck_queue.listener.class">Zenstruck\Queue\Listener</parameter>
+        <parameter key="zenstruck_queue.queue.class">Zenstruck\Queue\Queue</parameter>
+    </parameters>
+
+    <services>
+        <!-- Command -->
+        <service id="zenstruck_queue.command" class="%zenstruck_queue.command.class%">
+            <argument type="service" id="zenstruck_queue.listener" />
+            <tag name="console.command" />
+        </service>
+
+        <!-- Listener -->
+        <service id="zenstruck_queue.listener" class="%zenstruck_queue.listener.class%" public="false">
+            <argument type="service" id="zenstruck_queue.queue" />
+        </service>
+
+        <!-- Queue -->
+        <service id="zenstruck_queue.queue" class="%zenstruck_queue.queue.class%" public="false">
+            <argument type="service" id="zenstruck_queue.adapter" />
+            <argument type="service" id="event_dispatcher" />
+            <argument>%zenstruck_queue.fail_unknown%</argument>
+        </service>
+    </services>
+</container>

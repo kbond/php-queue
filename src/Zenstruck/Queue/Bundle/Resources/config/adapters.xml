@@ -1,0 +1,20 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <parameters>
+        <parameter key="zenstruck_queue.adapter.amazon_sqs.class">Zenstruck\Queue\Adapter\AmazonSqsAdapter</parameter>
+        <parameter key="zenstruck_queue.adapter.redis.class">Zenstruck\Queue\Adapter\RedisAdapter</parameter>
+        <parameter key="zenstruck_queue.adapter.beanstalkd.class">Zenstruck\Queue\Adapter\BeanstalkdAdapter</parameter>
+        <parameter key="zenstruck_queue.adapter.synchronous.class">Zenstruck\Queue\Adapter\SynchronousAdapter</parameter>
+    </parameters>
+
+    <services>
+        <service id="zenstruck_queue.adapter.amazon_sqs" class="%zenstruck_queue.adapter.amazon_sqs.class%" abstract="true" public="false" />
+        <service id="zenstruck_queue.adapter.redis" class="%zenstruck_queue.adapter.redis.class%" abstract="true" public="false" />
+        <service id="zenstruck_queue.adapter.beanstalkd" class="%zenstruck_queue.adapter.beanstalkd.class%" abstract="true" public="false" />
+        <service id="zenstruck_queue.adapter.synchronous" class="%zenstruck_queue.adapter.synchronous.class%" abstract="true" public="false" />
+    </services>
+</container>
