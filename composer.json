@@ -1,0 +1,24 @@
+{
+    "name": "zenstruck/queue",
+    "type": "library",
+    "description": "Unified API for different queue services.",
+    "keywords": ["queue", "amazon sqs", "beanstalkd", "redis"],
+    "homepage": "http://zenstruck.com/projects/Queue",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Kevin Bond",
+            "email": "kevinbond@gmail.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.3",
+        "symfony/event-dispatcher": "~2.3"
+    },
+    "require-dev": {
+        "phpspec/phpspec": "~2.0"
+    },
+    "autoload": {
+        "psr-0": { "Zenstruck": "src/" }
+    }
+}
