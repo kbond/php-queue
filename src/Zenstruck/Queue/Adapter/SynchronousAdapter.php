@@ -30,7 +30,11 @@ class SynchronousAdapter implements Adapter
             return null;
         }
 
-        return new Job('synchronous-job', $this->message, 1);
+        $job = new Job('synchronous-job', $this->message, 1);
+
+        $this->delete($job);
+
+        return $job;
     }
 
     /**

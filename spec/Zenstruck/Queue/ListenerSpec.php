@@ -31,7 +31,7 @@ class ListenerSpec extends ObjectBehavior
 
     function it_cancels_after_timeout()
     {
-        $this->listen(null, 1)->shouldBe('Timeout reached.');
+        $this->listen(null, 0)->shouldBe('Timeout reached.');
     }
 
     function it_cancels_after_max_memory_reached()
