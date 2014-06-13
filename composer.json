@@ -16,7 +16,8 @@
         "symfony/event-dispatcher": "~2.3"
     },
     "require-dev": {
-        "phpspec/phpspec": "~2.0"
+        "phpspec/phpspec": "~2.0",
+        "henrikbjorn/phpspec-code-coverage": "~0.1"
     },
     "autoload": {
         "psr-0": { "Zenstruck": "src/" }
