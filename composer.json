@@ -18,9 +18,16 @@
     "require-dev": {
         "psr/log": "~1.0",
         "phpspec/phpspec": "~2.0",
-        "henrikbjorn/phpspec-code-coverage": "~0.1"
+        "phpunit/phpunit": "~4.0",
+        "henrikbjorn/phpspec-code-coverage": "~0.1",
+        "aws/aws-sdk-php": "~2.6",
+        "predis/predis": "~0.8",
+        "pda/pheanstalk": "~2.0"
     },
     "autoload": {
         "psr-0": { "Zenstruck": "src/" }
+    },
+    "autoload-dev": {
+        "psr-0": { "Zenstruck": "tests/" }
     }
 }
