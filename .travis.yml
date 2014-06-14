@@ -10,9 +10,14 @@ env:
   - SYMFONY_VERSION=2.4.*
   - SYMFONY_VERSION=2.5.*
 
+services:
+  - redis-server
+
 before_install:
+  - apt-get update -qq
+  - apt-get install -qq beanstalkd
   - composer require symfony/event-dispatcher:${SYMFONY_VERSION}
 
 script:
-  - vendor/bin/phpunit --coverage-clover=coverage.clover
-  - vendor/bin/phpspec
+  - vendor/bin/phpunit --coverage-clover=build/phpunit.clover
+  - vendor/bin/phpspec run
