@@ -22,3 +22,8 @@ before_install:
 script:
   - vendor/bin/phpunit --coverage-clover=build/phpunit.clover
   - vendor/bin/phpspec run
+
+after_script:
+  - wget https://scrutinizer-ci.com/ocular.phar
+  - php ocular.phar code-coverage:upload --format=php-clover build/phpunit.clover
+  - php ocular.phar code-coverage:upload --format=php-clover build/phpspec.clover
