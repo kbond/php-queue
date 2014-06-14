@@ -24,7 +24,7 @@ final class Job
      * @param Message $message  The message for this job
      * @param int     $attempts The number of times this job was attempted
      */
-    public function __construct($id, Message $message, $attempts)
+    public function __construct($id, Message $message, $attempts = 1)
     {
         $this->id = $id;
         $this->message = $message;

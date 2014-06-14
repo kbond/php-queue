@@ -161,6 +161,6 @@ class QueueSpec extends ObjectBehavior
 
     function create_test_job()
     {
-        return new Job('id', new Message('foo', 'foo message', array()), 1);
+        return new Job('id', new Message('foo', 'foo message'));
     }
 }

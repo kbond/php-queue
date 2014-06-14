@@ -13,7 +13,7 @@ class MessageEventSpec extends EventSpec
 {
     function let()
     {
-        $this->beConstructedWith(new Message('foo', 'foo message', array('bar' => 'baz')));
+        $this->beConstructedWith(new Message('foo', 'foo message'));
     }
 
     function it_is_initializable()

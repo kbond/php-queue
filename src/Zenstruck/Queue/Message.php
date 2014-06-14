@@ -18,7 +18,7 @@ final class Message
      * @param array    $metadata Additional data
      * @param int|null $delay    The delay in seconds (null for default)
      */
-    public function __construct($data, $info, array $metadata, $delay = null)
+    public function __construct($data, $info, array $metadata = array(), $delay = null)
     {
         $this->data = $data;
         $this->info = $info;

@@ -14,7 +14,7 @@ class JobEventSpec extends EventSpec
 {
     function let()
     {
-        $this->beConstructedWith(new Job('id', new Message('foo', 'foo message', array('bar' => 'baz')), 1));
+        $this->beConstructedWith(new Job('id', new Message('foo', 'foo message')));
     }
 
     function it_is_initializable()

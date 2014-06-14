@@ -14,7 +14,7 @@ class JobSpec extends ObjectBehavior
 {
     function let()
     {
-        $this->beConstructedWith('id', new Message('foo', 'foo message', array('bar' => 'baz')), 1);
+        $this->beConstructedWith('id', new Message('foo', 'foo message', array('bar' => 'baz')));
     }
 
     function it_is_initializable()

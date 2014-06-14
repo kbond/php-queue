@@ -20,7 +20,7 @@ class SynchronousAdapterSpec extends ObjectBehavior
 
     function it_can_push_and_pop()
     {
-        $message = new Message('foo', 'foo message', array());
+        $message = new Message('foo', 'foo message');
 
         $this->push($message);
 
@@ -30,7 +30,7 @@ class SynchronousAdapterSpec extends ObjectBehavior
 
     function it_should_throw_exception_on_release()
     {
-        $job = new Job('id', new Message('foo', 'foo message', array()), 1);
+        $job = new Job('id', new Message('foo', 'foo message'));
 
         $this->shouldThrow('\RuntimeException')->during('release', array($job));
     }
