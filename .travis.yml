@@ -18,13 +18,15 @@ before_install:
   - sudo apt-get update -qq
   - sudo apt-get install -qq beanstalkd
   - sudo beanstalkd -d -l 127.0.0.1 -p 11300
+  - sh -c 'if [ "$TRAVIS_PHP_VERSION" != "hhvm" ]; then cp tests/phpspec-coverage.yml.dist ./phpspec.yml; fi;'
+  - sh -c 'if [ "$TRAVIS_PHP_VERSION" != "hhvm" ]; then composer require --no-update henrikbjorn/phpspec-code-coverage:~0.1; fi;'
   - composer require symfony/event-dispatcher:${SYMFONY_VERSION}
 
 script:
   - vendor/bin/phpunit --coverage-clover=build/phpunit.clover
-  - vendor/bin/phpspec run
+  - vendor/bin/phpspec run --format=pretty
 
 after_script:
-  - wget https://scrutinizer-ci.com/ocular.phar
-  - php ocular.phar code-coverage:upload --format=php-clover build/phpunit.clover
-  - php ocular.phar code-coverage:upload --format=php-clover build/phpspec.clover
+  - sh -c 'if [ "$TRAVIS_PHP_VERSION" != "hhvm" ]; then wget https://scrutinizer-ci.com/ocular.phar; fi;'
+  - sh -c 'if [ "$TRAVIS_PHP_VERSION" != "hhvm" ]; then php ocular.phar code-coverage:upload --format=php-clover build/phpunit.clover; fi;'
+  - sh -c 'if [ "$TRAVIS_PHP_VERSION" != "hhvm" ]; then php ocular.phar code-coverage:upload --format=php-clover build/phpspec.clover; fi;'

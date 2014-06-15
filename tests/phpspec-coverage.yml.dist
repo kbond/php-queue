@@ -1,5 +1,3 @@
-formatter.name: pretty
-
 code_coverage:
     output: build/phpspec.clover
     format: clover
