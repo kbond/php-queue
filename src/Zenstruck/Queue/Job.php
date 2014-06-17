@@ -28,7 +28,7 @@ final class Job
     {
         $this->id = $id;
         $this->message = $message;
-        $this->attempts = $attempts;
+        $this->attempts = (int) $attempts;
     }
 
     /**
