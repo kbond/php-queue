@@ -2,14 +2,14 @@
 
 namespace Zenstruck\Queue\Tests\Fixtures;
 
-use Zenstruck\Queue\Consumer;
+use Zenstruck\Queue\BaseConsumer;
 use Zenstruck\Queue\Event\JobEvent;
 use Zenstruck\Queue\Job;
 
 /**
  * @author Kevin Bond <kevinbond@gmail.com>
  */
-class TestConsumer implements Consumer
+class TestConsumer extends BaseConsumer
 {
     const ACTION_DEFAULT = 0;
     const ACTION_REQUEUE = 1;
@@ -24,9 +24,25 @@ class TestConsumer implements Consumer
     }
 
     /**
+     * @return null|Job
+     */
+    public function getJob()
+    {
+        return $this->job;
+    }
+
+    /**
      * {@inheritdoc}
      */
-    public function consume(JobEvent $event)
+    protected function supports(JobEvent $event)
+    {
+        return true;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function doConsume(JobEvent $event)
     {
         $this->job = $event->getJob();
 
@@ -41,13 +57,5 @@ class TestConsumer implements Consumer
 
                 break;
         }
-    }
-
-    /**
-     * @return null|Job
-     */
-    public function getJob()
-    {
-        return $this->job;
     }
 }

@@ -53,7 +53,9 @@ class BeanstalkdAdapter implements Adapter
             return null;
         }
 
-        $attempts = (int) $this->client->statsJob($rawJob)->reserves;
+        $attempts = isset($this->client->statsJob($rawJob)['reserves']) ?
+            (int) $this->client->statsJob($rawJob)['reserves'] : 1
+        ;
 
         return new Job($rawJob, $message, $attempts);
     }
