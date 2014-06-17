@@ -32,6 +32,14 @@ class SynchronousAdapterSpec extends ObjectBehavior
     {
         $job = new Job('id', new Message('foo', 'foo message'));
 
-        $this->shouldThrow('\RuntimeException')->during('release', array($job));
+        $this->shouldThrow(new \RuntimeException('Cannot release job "foo message" with SynchronousAdapter.'))->during('release', array($job));
+    }
+
+    function it_should_throw_fail_exception_on_release_when_job_is_failed()
+    {
+        $job = new Job('id', new Message('foo', 'foo message'));
+        $job->fail('this failed');
+
+        $this->shouldThrow(new \RuntimeException('Job "foo message" failed with message "this failed".'))->during('release', array($job));
     }
 }
