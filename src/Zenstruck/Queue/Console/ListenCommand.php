@@ -27,9 +27,9 @@ class ListenCommand extends Command
         $this
             ->setName('zenstruck:queue:listen')
             ->setDescription('Listen to and consume jobs from a queue.')
-            ->addOption('max-jobs', null, InputOption::VALUE_OPTIONAL, 'The number of jobs to consume before exiting')
-            ->addOption('timeout', null, InputOption::VALUE_OPTIONAL, 'The number of seconds to consume jobs before exiting')
-            ->addOption('memory-limit', null, InputOption::VALUE_OPTIONAL, 'The memory limit in MB - will exit if exceeded')
+            ->addOption('max-jobs', null, InputOption::VALUE_REQUIRED, 'The number of jobs to consume before exiting')
+            ->addOption('timeout', null, InputOption::VALUE_REQUIRED, 'The number of seconds to consume jobs before exiting')
+            ->addOption('memory-limit', null, InputOption::VALUE_REQUIRED, 'The memory limit in MB - will exit if exceeded')
         ;
     }
 
