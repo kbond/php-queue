@@ -23,6 +23,8 @@ abstract class EventSpec extends ObjectBehavior
         $this->push('bar', 'bar message');
 
         $this->getMessages()->shouldHaveCount(1);
-        $this->getMessages()[0]->shouldBeAnInstanceOf('Zenstruck\Queue\Message');
+
+        $messages = $this->getMessages();
+        $messages[0]->shouldBeAnInstanceOf('Zenstruck\Queue\Message');
     }
 }
