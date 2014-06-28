@@ -17,7 +17,7 @@ class ListenCommandTest extends \PHPUnit_Framework_TestCase
      */
     public function testExecute(array $input, $message)
     {
-        $queue = $this->getMock('Zenstruck\Queue\Queue', [], [], '', false);
+        $queue = $this->getMock('Zenstruck\Queue\Queue', array(), array(), '', false);
         $queue->expects($this->any())->method('consume')->willReturn(true);
         $application = new Application();
         $application->add(new ListenCommand(new Listener($queue)));
