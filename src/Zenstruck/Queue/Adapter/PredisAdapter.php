@@ -2,14 +2,16 @@
 
 namespace Zenstruck\Queue\Adapter;
 
+use Predis\Client;
+
 /**
  * @author Kevin Bond <kevinbond@gmail.com>
  */
-class RedisAdapter extends BaseRedisAdapter
+class PredisAdapter extends BaseRedisAdapter
 {
     private $client;
 
-    public function __construct(\Redis $client, $queueName)
+    public function __construct(Client $client, $queueName)
     {
         $this->client = $client;
 
@@ -21,9 +23,7 @@ class RedisAdapter extends BaseRedisAdapter
      */
     protected function lPop($queueName)
     {
-        $data = $this->client->lPop($queueName);
-
-        return false === $data ? null : $data;
+        return $this->client->lpop($queueName);
     }
 
     /**
@@ -31,7 +31,7 @@ class RedisAdapter extends BaseRedisAdapter
      */
     protected function zAdd($queueName, $delay, $payload)
     {
-        $this->client->zAdd($queueName, $delay, $payload);
+        $this->client->zadd($queueName, $delay, $payload);
     }
 
     /**
@@ -39,7 +39,7 @@ class RedisAdapter extends BaseRedisAdapter
      */
     protected function rPush($queueName, $payload)
     {
-        $this->client->rPush($queueName, $payload);
+        $this->client->rpush($queueName, $payload);
     }
 
     /**
@@ -47,7 +47,7 @@ class RedisAdapter extends BaseRedisAdapter
      */
     protected function zRangeByScore($queueName, $start, $end)
     {
-        return $this->client->zRangeByScore($queueName, $start, $end);
+        return $this->client->zrangebyscore($queueName, $start, $end);
     }
 
     /**
@@ -55,6 +55,6 @@ class RedisAdapter extends BaseRedisAdapter
      */
     protected function zRemRangeByScore($queueName, $start, $end)
     {
-        $this->client->zRemRangeByScore($queueName, $start, $end);
+        $this->client->zremrangebyscore($queueName, $start, $end);
     }
 }
