@@ -2,12 +2,13 @@
 
 namespace Zenstruck\Queue\Tests\Functional;
 
+use Predis\Client;
 use Zenstruck\Queue\Adapter;
 
 /**
  * @author Kevin Bond <kevinbond@gmail.com>
  */
-class RedisAdapterTest extends BaseFunctionalTest
+class PredisAdapterTest extends BaseFunctionalTest
 {
     const QUEUE_NAME = 'foo';
 
@@ -15,24 +16,13 @@ class RedisAdapterTest extends BaseFunctionalTest
 
     protected function setUp()
     {
-        if (!extension_loaded('redis')) {
-            $this->markTestSkipped('The ' . __CLASS__ .' requires the use of redis');
-
-            return;
-        }
-
-        $this->client = new \Redis();
-        $this->client->connect('localhost');
+        $this->client = new Client();
 
         $this->tearDown();
     }
 
     protected function tearDown()
     {
-        if (!extension_loaded('redis')) {
-            return;
-        }
-
         $this->client->del(self::QUEUE_NAME);
         $this->client->del(self::QUEUE_NAME.':delayed');
     }
@@ -42,7 +32,7 @@ class RedisAdapterTest extends BaseFunctionalTest
      */
     protected function createAdapter()
     {
-        return new Adapter\RedisAdapter($this->client, self::QUEUE_NAME);
+        return new Adapter\PredisAdapter($this->client, self::QUEUE_NAME);
     }
 
     /**
@@ -50,6 +40,7 @@ class RedisAdapterTest extends BaseFunctionalTest
      */
     protected function pushInvalidData()
     {
-        $this->client->rPush(self::QUEUE_NAME, 'invalid data');
+        $this->client->rpush(self::QUEUE_NAME, 'invalid data');
     }
+
 }
