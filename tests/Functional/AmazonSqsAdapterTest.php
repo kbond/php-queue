@@ -11,7 +11,7 @@ use Zenstruck\Queue\Message;
 /**
  * @author Kevin Bond <kevinbond@gmail.com>
  */
-class AmazonSqsAdapterTest extends BaseFunctionalTest
+class AmazonSqsAdapterTest extends AdapterTest
 {
     /**
      * @var SqsClient

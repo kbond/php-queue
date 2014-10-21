@@ -13,7 +13,7 @@ use Zenstruck\Queue\Tests\Fixtures\TestConsumer;
 /**
  * @author Kevin Bond <kevinbond@gmail.com>
  */
-abstract class BaseFunctionalTest extends \PHPUnit_Framework_TestCase
+abstract class AdapterTest extends \PHPUnit_Framework_TestCase
 {
     public function testConsume()
     {

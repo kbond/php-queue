@@ -8,7 +8,7 @@ use Zenstruck\Queue\Adapter;
 /**
  * @author Kevin Bond <kevinbond@gmail.com>
  */
-class PredisAdapterTest extends BaseFunctionalTest
+class PredisAdapterTest extends AdapterTest
 {
     const QUEUE_NAME = 'foo';
 

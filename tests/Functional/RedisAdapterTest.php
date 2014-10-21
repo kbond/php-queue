@@ -7,7 +7,7 @@ use Zenstruck\Queue\Adapter;
 /**
  * @author Kevin Bond <kevinbond@gmail.com>
  */
-class RedisAdapterTest extends BaseFunctionalTest
+class RedisAdapterTest extends AdapterTest
 {
     const QUEUE_NAME = 'foo';
 

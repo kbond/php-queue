@@ -7,7 +7,7 @@ use Zenstruck\Queue\Adapter;
 /**
  * @author Kevin Bond <kevinbond@gmail.com>
  */
-class BeanstalkdAdapterTest extends BaseFunctionalTest
+class BeanstalkdAdapterTest extends AdapterTest
 {
     const TUBE = 'foo';
 
