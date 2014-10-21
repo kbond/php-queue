@@ -87,6 +87,8 @@ Returns `true` if a job was consumed, `false` otherwise.
             $job->delete(); // consume was successful, delete
             $job->requeue(10); // requeue the job with a 10 second delay
             $job->fail('this job failed', 10); // fail the job with a reason and a 10 second delay
+
+            $event->push('message', 'message info'); // can push new messages to the queue
         }
     }
     ```
@@ -114,6 +116,13 @@ use Zenstruck\Queue\Adapter\SynchronousAdapter;
 
 $adapter = new SynchronousAdapter();
 ```
+
+There are some restrictions when using the SynchronousAdapter because of how easy it would
+be to enter an infinite loop. An exception is thrown for these cases:
+
+1. Jobs marked as failed.
+2. Jobs marked as requeue.
+3. Pushing messages within events.
 
 #### BeanstalkdAdapter
 
@@ -237,6 +246,9 @@ Name                           | Description                                   |
 `zenstruck_queue.pre_consume`  | Occurs before job is consumed                 | `Zenstruck\Queue\Event\JobEvent`
 `zenstruck_queue.consume`      | The main consume event (consumers use this)   | `Zenstruck\Queue\Event\JobEvent`
 `zenstruck_queue.post_consume` | Occurs after a job is consumed                | `Zenstruck\Queue\Event\JobEvent`
+
+**NOTE**: You can push additional messages to your queue using `MessageEvent::push()`
+and `JobEvent::push(). Be careful using this as it can lead to infinite recursion.
 
 ### E. LoggableSubscriber
 
