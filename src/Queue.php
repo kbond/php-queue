@@ -80,15 +80,17 @@ class Queue implements Pushable
         switch ($job->getStatus()) {
             case Job::STATUS_FAILED:
                 $this->adapter->release($job);
+
                 break;
 
             case Job::STATUS_REQUEUE:
-                $this->adapter->push($job->createRequeueMessage());
-                $this->adapter->delete($job);
+                $this->requeue($job);
+
                 break;
 
             default:
                 $this->adapter->delete($job);
+
                 break;
         }
 
@@ -105,7 +107,7 @@ class Queue implements Pushable
         $this->adapter->push($message);
         $this->dispatchEvent(QueueEvents::POST_PUSH, new MessageEvent($message));
 
-        if ($this->adapter instanceof SynchronousAdapter) {
+        if ($this->isSynchronousAdapter()) {
             // consume the job right away
             $this->consume();
         }
@@ -119,8 +121,35 @@ class Queue implements Pushable
     {
         $this->dispatcher->dispatch($eventName, $event);
 
-        foreach ($event->getMessages() as $message) {
+        $messages = $event->getMessages();
+
+        if (count($messages) && $this->isSynchronousAdapter()) {
+            throw new \RuntimeException('Cannot push messages in events with SynchronousAdapter.');
+        }
+
+        foreach ($messages as $message) {
             $this->doPush($message);
         }
+    }
+
+    /**
+     * @param Job $job
+     */
+    private function requeue(Job $job)
+    {
+        if ($this->isSynchronousAdapter()) {
+            throw new \RuntimeException('Cannot requeue jobs with SynchronousAdapter.');
+        }
+
+        $this->adapter->push($job->createRequeueMessage());
+        $this->adapter->delete($job);
+    }
+
+    /**
+     * @return bool
+     */
+    private function isSynchronousAdapter()
+    {
+        return $this->adapter instanceof SynchronousAdapter;
     }
 }
