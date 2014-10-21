@@ -80,17 +80,14 @@ class Queue implements Pushable
         switch ($job->getStatus()) {
             case Job::STATUS_FAILED:
                 $this->adapter->release($job);
-
                 break;
 
             case Job::STATUS_REQUEUE:
                 $this->requeue($job);
-
                 break;
 
             default:
                 $this->adapter->delete($job);
-
                 break;
         }
 

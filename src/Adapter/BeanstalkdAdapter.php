@@ -50,6 +50,7 @@ class BeanstalkdAdapter implements Adapter
         if (!$message instanceof Message) {
             // can't handle, requeue
             $this->client->release($rawJob, 2048);
+
             return null;
         }
 

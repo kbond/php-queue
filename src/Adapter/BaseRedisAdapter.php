@@ -118,9 +118,9 @@ abstract class BaseRedisAdapter implements Adapter
     abstract protected function lPop($queueName);
 
     /**
-     * @param string   $queueName
-     * @param int      $delay
-     * @param string   $payload
+     * @param string $queueName
+     * @param int    $delay
+     * @param string $payload
      */
     abstract protected function zAdd($queueName, $delay, $payload);
 
