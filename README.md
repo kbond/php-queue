@@ -185,6 +185,10 @@ $client = new Client();
 $adapter = new PredisAdapter($client, 'my_queue');
 ```
 
+#### Add a Custom Adapter
+
+Your class must implement `Zenstruck\Queue\Adapter`.
+
 ### B. Listener
 
 A listener class is provided for consuming jobs from the queue.
@@ -241,11 +245,11 @@ There are several events that you can hook into. For more information on using t
 dispatcher, see its [documentation](http://symfony.com/doc/current/components/event_dispatcher/introduction.html).
 
 Name                           | Description                                   | Event Class
------------------------------- | --------------------------------------------- | ------------------------------------
-`zenstruck_queue.post_push`    | Occurs after a message is pushed to the queue | `Zenstruck\Queue\Event\MessageEvent`
-`zenstruck_queue.pre_consume`  | Occurs before job is consumed                 | `Zenstruck\Queue\Event\JobEvent`
-`zenstruck_queue.consume`      | The main consume event (consumers use this)   | `Zenstruck\Queue\Event\JobEvent`
-`zenstruck_queue.post_consume` | Occurs after a job is consumed                | `Zenstruck\Queue\Event\JobEvent`
+------------------------------ | --------------------------------------------- | --------------
+`zenstruck_queue.post_push`    | Occurs after a message is pushed to the queue | `MessageEvent`
+`zenstruck_queue.pre_consume`  | Occurs before job is consumed                 | `JobEvent`
+`zenstruck_queue.consume`      | The main consume event (consumers use this)   | `JobEvent`
+`zenstruck_queue.post_consume` | Occurs after a job is consumed                | `JobEvent`
 
 **NOTE**: You can push additional messages to your queue using `MessageEvent::push()`
 and `JobEvent::push(). Be careful using this as it can lead to infinite recursion.
