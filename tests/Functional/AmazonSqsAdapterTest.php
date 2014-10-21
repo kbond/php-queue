@@ -100,6 +100,61 @@ class AmazonSqsAdapterTest extends BaseFunctionalTest
         parent::testQueueSpool();
     }
 
+    public function testFalseFailUnknownPolicy()
+    {
+        $this->addNullMockResponse(); // consume nothing
+        $this->addNullMockResponse(); // pushing foo
+        $this->addMessageMockResponse(new Message('foo', 'foo message')); // receive foo
+        $this->addNullMockResponse(); // delete foo
+        $this->addNullMockResponse(); // consume nothing
+
+        parent::testFalseFailUnknownPolicy();
+    }
+
+    public function testTrueFailUnknownPolicy()
+    {
+        $this->addNullMockResponse(); // consume nothing
+        $this->addNullMockResponse(); // pushing foo
+        $this->addMessageMockResponse(new Message('foo', 'foo message')); // receive foo
+        $this->addMessageMockResponse(new Message('foo', 'foo message')); // receive foo
+
+        parent::testTrueFailUnknownPolicy();
+    }
+
+    public function testTrueFailUnknownPolicyWithDelete()
+    {
+        $this->addNullMockResponse(); // consume nothing
+        $this->addNullMockResponse(); // pushing foo
+        $this->addMessageMockResponse(new Message('foo', 'foo message')); // receive foo
+        $this->addNullMockResponse(); // delete foo
+        $this->addNullMockResponse(); // consume nothing
+
+        parent::testTrueFailUnknownPolicyWithDelete();
+    }
+
+    public function testCatchConsumeException()
+    {
+        $this->addNullMockResponse(); // consume nothing
+        $this->addNullMockResponse(); // pushing foo
+        $this->addMessageMockResponse(new Message('foo', 'foo message')); // receive foo
+        $this->addMessageMockResponse(new Message('foo', 'foo message')); // receive foo
+
+        parent::testCatchConsumeException();
+    }
+
+    public function testEventPushMessage()
+    {
+        $this->addNullMockResponse(); // consume nothing
+        $this->addNullMockResponse(); // pushing foo
+        $this->addMessageMockResponse(new Message('foo', 'foo message')); // receive foo
+        $this->addNullMockResponse(); // delete foo
+        $this->addNullMockResponse(); // pushing test
+        $this->addMessageMockResponse(new Message('test', 'test message')); // receive test
+        $this->addNullMockResponse(); // delete test
+        $this->addNullMockResponse(); // consume nothing
+
+        parent::testEventPushMessage();
+    }
 
     protected function setUp()
     {

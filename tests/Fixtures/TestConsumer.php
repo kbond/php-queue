@@ -11,16 +11,20 @@ use Zenstruck\Queue\Job;
  */
 class TestConsumer extends BaseConsumer
 {
-    const ACTION_DEFAULT = 0;
-    const ACTION_REQUEUE = 1;
-    const ACTION_FAIL    = 2;
+    const ACTION_DEFAULT   = 0;
+    const ACTION_REQUEUE   = 1;
+    const ACTION_FAIL      = 2;
+    const ACTION_DELETE    = 3;
+    const ACTION_EXCEPTION = 4;
 
     private $action;
+    private $pushMessage;
     private $job = null;
 
-    public function __construct($action = self::ACTION_DEFAULT)
+    public function __construct($action = self::ACTION_DEFAULT, $pushMessage = false)
     {
         $this->action = $action;
+        $this->pushMessage = $pushMessage;
     }
 
     /**
@@ -46,6 +50,10 @@ class TestConsumer extends BaseConsumer
     {
         $this->job = $event->getJob();
 
+        if ($this->pushMessage && $this->job->getData() !== 'test') {
+            $event->push('test', 'test message');
+        }
+
         switch ($this->action) {
             case self::ACTION_FAIL:
                 $this->job->fail('Fail!');
@@ -56,6 +64,14 @@ class TestConsumer extends BaseConsumer
                 $this->job->requeue();
 
                 break;
+
+            case self::ACTION_DELETE:
+                $this->job->delete();
+
+                break;
+
+            case self::ACTION_EXCEPTION:
+                throw new \RuntimeException('this has failed.');
         }
     }
 }

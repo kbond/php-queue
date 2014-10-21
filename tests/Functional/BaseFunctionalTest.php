@@ -5,6 +5,7 @@ namespace Zenstruck\Queue\Tests\Functional;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Zenstruck\Queue\Adapter;
 use Zenstruck\Queue\EventListener\LoggableSubscriber;
+use Zenstruck\Queue\Job;
 use Zenstruck\Queue\Queue;
 use Zenstruck\Queue\QueueSpool;
 use Zenstruck\Queue\Tests\Fixtures\TestConsumer;
@@ -177,6 +178,98 @@ abstract class BaseFunctionalTest extends \PHPUnit_Framework_TestCase
         $queue->flush();
 
         $this->assertFalse($queue->consume(), 'Spool is empty');
+    }
+
+    public function testFalseFailUnknownPolicy()
+    {
+        $consumer = new TestConsumer();
+        $queue = new Queue($this->createAdapter(), new EventDispatcher());
+        $queue->addConsumer($consumer);
+
+        $this->assertFalse($queue->consume(), 'Empty queue');
+        $this->assertNull($consumer->getJob(), 'Not yet set');
+
+        $queue->push('foo', 'foo message');
+
+        $this->assertTrue($queue->consume());
+        $this->assertSame('foo', $consumer->getJob()->getData());
+
+        $this->assertFalse($queue->consume(), 'Empty queue');
+    }
+
+    public function testTrueFailUnknownPolicy()
+    {
+        $consumer = new TestConsumer();
+        $queue = new Queue($this->createAdapter(), new EventDispatcher(), true);
+        $queue->addConsumer($consumer);
+
+        $this->assertFalse($queue->consume(), 'Empty queue');
+        $this->assertNull($consumer->getJob(), 'Not yet set');
+
+        $queue->push('foo', 'foo message');
+
+        $this->assertTrue($queue->consume());
+        $this->assertSame('foo', $consumer->getJob()->getData());
+        $this->assertSame(Job::STATUS_FAILED, $consumer->getJob()->getStatus());
+        $this->assertSame('No consumer set or consumer failed to set status.', $consumer->getJob()->getFailMessage());
+
+        $this->assertTrue($queue->consume(), 'Job was requeued');
+    }
+
+    public function testTrueFailUnknownPolicyWithDelete()
+    {
+        $consumer = new TestConsumer(TestConsumer::ACTION_DELETE);
+        $queue = new Queue($this->createAdapter(), new EventDispatcher(), true);
+        $queue->addConsumer($consumer);
+
+        $this->assertFalse($queue->consume(), 'Empty queue');
+        $this->assertNull($consumer->getJob(), 'Not yet set');
+
+        $queue->push('foo', 'foo message');
+
+        $this->assertTrue($queue->consume());
+        $this->assertSame('foo', $consumer->getJob()->getData());
+
+        $this->assertFalse($queue->consume(), 'Empty queue');
+    }
+
+    public function testCatchConsumeException()
+    {
+        $consumer = new TestConsumer(TestConsumer::ACTION_EXCEPTION);
+        $queue = new Queue($this->createAdapter(), new EventDispatcher());
+        $queue->addConsumer($consumer);
+
+        $this->assertFalse($queue->consume(), 'Empty queue');
+        $this->assertNull($consumer->getJob(), 'Not yet set');
+
+        $queue->push('foo', 'foo message');
+
+        $this->assertTrue($queue->consume());
+        $this->assertSame('foo', $consumer->getJob()->getData());
+        $this->assertSame(Job::STATUS_FAILED, $consumer->getJob()->getStatus());
+        $this->assertSame('this has failed.', $consumer->getJob()->getFailMessage());
+
+        $this->assertTrue($queue->consume(), 'Job was requeued');
+    }
+
+    public function testEventPushMessage()
+    {
+        $consumer = new TestConsumer(TestConsumer::ACTION_DEFAULT, true);
+        $queue = new Queue($this->createAdapter(), new EventDispatcher());
+        $queue->addConsumer($consumer);
+
+        $this->assertFalse($queue->consume(), 'Empty queue');
+        $this->assertNull($consumer->getJob(), 'Not yet set');
+
+        $queue->push('foo', 'foo message');
+
+        $this->assertTrue($queue->consume());
+        $this->assertSame('foo', $consumer->getJob()->getData());
+
+        $this->assertTrue($queue->consume());
+        $this->assertSame('test', $consumer->getJob()->getData());
+
+        $this->assertFalse($queue->consume());
     }
 
     /**
