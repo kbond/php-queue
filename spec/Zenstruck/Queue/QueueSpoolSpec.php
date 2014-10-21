@@ -44,4 +44,26 @@ class QueueSpoolSpec extends ObjectBehavior
         $this->push('bar', 'bar message');
         $this->flush();
     }
+
+    function it_clears_the_spool_during_flush($adapter)
+    {
+        $adapter->push(Argument::type('Zenstruck\Queue\Message'))->shouldBeCalledTimes(2);
+
+        $this->push('foo', 'foo message');
+        $this->push('bar', 'bar message');
+        $this->flush();
+        $this->flush();
+    }
+
+    function it_can_add_messages_after_flush($adapter)
+    {
+        $adapter->push(Argument::type('Zenstruck\Queue\Message'))->shouldBeCalledTimes(3);
+
+        $this->push('foo', 'foo message');
+        $this->push('bar', 'bar message');
+        $this->flush();
+
+        $this->push('baz', 'baz message');
+        $this->flush();
+    }
 }

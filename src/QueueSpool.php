@@ -27,8 +27,10 @@ class QueueSpool extends Queue
      */
     public function flush()
     {
-        foreach ($this->messages as $message) {
+        foreach ($this->messages as $key => $message) {
             $this->doPush($message);
         }
+
+        $this->messages = array();
     }
 }

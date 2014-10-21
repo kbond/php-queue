@@ -6,6 +6,7 @@ use Symfony\Component\EventDispatcher\EventDispatcher;
 use Zenstruck\Queue\Adapter;
 use Zenstruck\Queue\EventListener\LoggableSubscriber;
 use Zenstruck\Queue\Queue;
+use Zenstruck\Queue\QueueSpool;
 use Zenstruck\Queue\Tests\Fixtures\TestConsumer;
 
 /**
@@ -148,6 +149,34 @@ abstract class BaseFunctionalTest extends \PHPUnit_Framework_TestCase
 
         $queue->push('foo', 'foo message', array());
         $queue->consume();
+    }
+
+    public function testQueueSpool()
+    {
+        $consumer = new TestConsumer();
+
+        $queue = new QueueSpool($this->createAdapter(), new EventDispatcher());
+        $queue->addConsumer($consumer);
+
+        $this->assertFalse($queue->consume(), 'Empty queue');
+        $this->assertNull($consumer->getJob(), 'Not yet set');
+
+        $queue->push('foo', 'foo message', array());
+        $queue->push('bar', 'foo message', array());
+
+        $this->assertFalse($queue->consume(), 'Messages are spooled');
+
+        $queue->flush();
+
+        $this->assertTrue($queue->consume());
+        $this->assertSame('foo', $consumer->getJob()->getData());
+        $this->assertTrue($queue->consume());
+        $this->assertSame('bar', $consumer->getJob()->getData());
+        $this->assertFalse($queue->consume());
+
+        $queue->flush();
+
+        $this->assertFalse($queue->consume(), 'Spool is empty');
     }
 
     /**

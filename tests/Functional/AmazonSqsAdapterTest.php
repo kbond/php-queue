@@ -65,6 +65,7 @@ class AmazonSqsAdapterTest extends BaseFunctionalTest
 
         parent::testLoggableSubscriber();
     }
+
     public function testLoggableSubscriberWithRequeue()
     {
         $this->addNullMockResponse(); // pushing foo
@@ -82,6 +83,23 @@ class AmazonSqsAdapterTest extends BaseFunctionalTest
 
         parent::testLoggableSubscriberWithFail();
     }
+
+    public function testQueueSpool()
+    {
+        $this->addNullMockResponse(); // consume nothing
+        $this->addNullMockResponse(); // pushing foo
+        $this->addNullMockResponse(); // pushing bar
+        $this->addNullMockResponse(); // consume nothing
+        $this->addMessageMockResponse(new Message('foo', 'foo message')); // receive foo
+        $this->addNullMockResponse(); // delete foo
+        $this->addMessageMockResponse(new Message('bar', 'bar message')); // receive bar
+        $this->addNullMockResponse(); // delete bar
+        $this->addNullMockResponse(); // consume nothing
+        $this->addNullMockResponse(); // consume nothing
+
+        parent::testQueueSpool();
+    }
+
 
     protected function setUp()
     {
