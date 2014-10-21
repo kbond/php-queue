@@ -7,7 +7,7 @@
 [![License](http://img.shields.io/packagist/l/zenstruck/queue.svg?style=flat-square)](https://packagist.org/packages/zenstruck/queue)
 
 Unified API for different queue services. Heavily inspired by
-[Laravel Queue](http://laravel.com/docs/4.2/queues)
+[Laravel Queue](http://laravel.com/docs/4.2/queues).
 
 This library provides a queue manager that pushes "messages" and consumes "jobs".
 
@@ -57,7 +57,7 @@ Returns `true` if a job was consumed, `false` otherwise.
 
 ### Add a Job Consumer
 
-1. Create a consumer
+1. Create a consumer:
 
     ```php
     use Zenstruck\Queue\BaseConsumer;
@@ -93,7 +93,7 @@ Returns `true` if a job was consumed, `false` otherwise.
 
     **NOTE**: When a job is failed, it is requeued and its attempt count is increased.
 
-2. Add consumer to queue
+2. Add consumer to queue:
 
     ```php
     $queue->addConsumer(new MyConsumer(), 10); // add with a priority of 10
@@ -117,7 +117,7 @@ $adapter = new SynchronousAdapter();
 
 #### BeanstalkdAdapter
 
-Requires [pda/pheanstalk](https://github.com/pda/pheanstalk)
+Requires [pda/pheanstalk](https://github.com/pda/pheanstalk).
 
     composer require pda/pheanstalk
 
@@ -131,7 +131,7 @@ $adapter = new BeanstalkdAdapter($client, 'my_queue');
 
 #### AmazonSqsAdapter
 
-Requires [aws/aws-sdk-php](https://github.com/aws/aws-sdk-php)
+Requires [aws/aws-sdk-php](https://github.com/aws/aws-sdk-php).
 
     composer require aws/aws-sdk-php
 
@@ -150,7 +150,7 @@ $adapter = new AmazonSqsAdapter($client, 'https://sqs.us-east-1.amazonaws.com/qu
 
 #### RedisAdapter
 
-Requires the [Redis PHP extension](https://github.com/nicolasff/phpredis)
+Requires the [Redis PHP extension](https://github.com/nicolasff/phpredis).
 
 ```php
 use Zenstruck\Queue\Adapter\RedisAdapter;
@@ -163,7 +163,7 @@ $adapter = new RedisAdapter($client, 'my_queue');
 
 #### PredisAdapter
 
-Requires [predis/predis](https://github.com/nrk/predis)
+Requires [predis/predis](https://github.com/nrk/predis).
 
     composer require predis/predis
 
@@ -232,7 +232,7 @@ There are several events that you can hook into. For more information on using t
 dispatcher, see its [documentation](http://symfony.com/doc/current/components/event_dispatcher/introduction.html).
 
 Name                           | Description                                   | Event Class
-------------------------------- ----------------------------------------------- -------------------------------------
+------------------------------ | --------------------------------------------- | ------------------------------------
 `zenstruck_queue.post_push`    | Occurs after a message is pushed to the queue | `Zenstruck\Queue\Event\MessageEvent`
 `zenstruck_queue.pre_consume`  | Occurs before job is consumed                 | `Zenstruck\Queue\Event\JobEvent`
 `zenstruck_queue.consume`      | The main consume event (consumers use this)   | `Zenstruck\Queue\Event\JobEvent`
@@ -254,4 +254,23 @@ $dispatcher = new EventDispatcher();
 $dispatcher->addSubscriber($subscriber);
 
 $queue = new Queue(/* adapter */, $dispatcher);
+```
+
+### F. QueueSpool
+
+When using the standard `Queue`, pushing a message immediately pushes it to the adapter. The `QueueSpool`
+extends `Queue` but pushed messages are added to an "in memory spool". When the spool is flushed, then
+all messages are added to the adapter queue. This can be useful if your adapter is slow or you are using the
+`SynchronousAdapter`.  You can flush the spool after the response is sent to the user.
+
+```php
+$queue = new QueueSpool(/* ... */);
+
+$queue->push(/* ... */);
+$queue->push(/* ... */);
+$queue->push(/* ... */);
+
+// send response to user
+
+$queue->flush(); // flush the spool and send messages to adapter queue
 ```
