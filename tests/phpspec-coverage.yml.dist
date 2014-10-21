@@ -1,6 +1,0 @@
-code_coverage:
-    output: build/phpspec.clover
-    format: clover
-
-extensions:
-    - PhpSpec\Extension\CodeCoverageExtension
