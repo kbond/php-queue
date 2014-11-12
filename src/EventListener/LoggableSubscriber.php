@@ -24,7 +24,7 @@ class LoggableSubscriber implements EventSubscriberInterface
         return array(
             QueueEvents::POST_PUSH => array('postPush', -1024),
             QueueEvents::PRE_CONSUME => array('preConsume', -1024),
-            QueueEvents::POST_CONSUME => array('postConsume', -1024)
+            QueueEvents::POST_CONSUME => array('postConsume', -1024),
         );
     }
 

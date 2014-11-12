@@ -105,7 +105,7 @@ abstract class BaseRedisAdapter implements Adapter
         return json_encode(
             array(
                 'message' => serialize($message),
-                'attempts' => $attempts
+                'attempts' => $attempts,
             )
         );
     }

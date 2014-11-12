@@ -16,7 +16,7 @@ class RedisAdapterTest extends AdapterTest
     protected function setUp()
     {
         if (!extension_loaded('redis')) {
-            $this->markTestSkipped('The ' . __CLASS__ .' requires the use of redis');
+            $this->markTestSkipped('The '.__CLASS__.' requires the use of redis');
 
             return;
         }

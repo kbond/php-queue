@@ -4,8 +4,8 @@ namespace Zenstruck\Queue\Adapter;
 
 use Aws\Sqs\SqsClient;
 use Zenstruck\Queue\Adapter;
-use Zenstruck\Queue\Message;
 use Zenstruck\Queue\Job;
+use Zenstruck\Queue\Message;
 
 /**
  * @author Kevin Bond <kevinbond@gmail.com>
@@ -36,9 +36,9 @@ class AmazonSqsAdapter implements Adapter
             'MessageAttributes' => array(
                 'info' => array(
                     'StringValue' => $message->getInfo(),
-                    'DataType' => 'String'
-                )
-            )
+                    'DataType' => 'String',
+                ),
+            ),
         );
 
         if (null !== ($delay = $message->getDelay())) {
@@ -57,7 +57,7 @@ class AmazonSqsAdapter implements Adapter
             array(
                 'QueueUrl' => $this->queueUrl,
                 'MaxNumberOfMessages' => 1,
-                'AttributeNames' => array('ApproximateReceiveCount')
+                'AttributeNames' => array('ApproximateReceiveCount'),
             )
         );
 
@@ -93,7 +93,7 @@ class AmazonSqsAdapter implements Adapter
         $this->client->deleteMessage(
             array(
                 'QueueUrl' => $this->queueUrl,
-                'ReceiptHandle' => $job->getId()
+                'ReceiptHandle' => $job->getId(),
             )
         );
     }

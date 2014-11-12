@@ -161,7 +161,7 @@ class AmazonSqsAdapterTest extends AdapterTest
         $this->client = SqsClient::factory(array(
             'key'    => 'foo',
             'secret' => 'bar',
-            'region' => 'us-east-1'
+            'region' => 'us-east-1',
         ));
     }
 
@@ -195,15 +195,15 @@ class AmazonSqsAdapterTest extends AdapterTest
         }
 
         $md5 = md5($body);
-        $this->mockResponses[] = Response::fromMessage("HTTP/1.1 200 OK\r\nContent-Type: application/xml\r\n\r\n" .
+        $this->mockResponses[] = Response::fromMessage("HTTP/1.1 200 OK\r\nContent-Type: application/xml\r\n\r\n".
             "<ReceiveMessageResponse>
               <ReceiveMessageResult>
                 <Message>
-                  <MD5OfBody>" . $md5 ."</MD5OfBody>
-                  <Body>". $body ."</Body>
+                  <MD5OfBody>".$md5."</MD5OfBody>
+                  <Body>".$body."</Body>
                   <ReceiptHandle>foo</ReceiptHandle>
                   <Attributes>
-                    <ApproximateReceiveCount>" . $receiveCount ."</ApproximateReceiveCount>
+                    <ApproximateReceiveCount>".$receiveCount."</ApproximateReceiveCount>
                   </Attributes>
                 </Message>
               </ReceiveMessageResult>

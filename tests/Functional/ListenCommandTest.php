@@ -35,7 +35,7 @@ class ListenCommandTest extends \PHPUnit_Framework_TestCase
             array(array('--timeout' => 0), 'Listener Stopped: Timeout reached.'),
             array(array('--memory-limit' => 0), 'Listener Stopped: Memory limit reached.'),
             array(array('--max-jobs' => 1), 'Listener Stopped: Max jobs consumed.'),
-            array(array('--max-jobs' => 10), 'Listener Stopped: Max jobs consumed.')
+            array(array('--max-jobs' => 10), 'Listener Stopped: Max jobs consumed.'),
         );
     }
 }

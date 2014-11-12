@@ -42,5 +42,4 @@ class PredisAdapterTest extends AdapterTest
     {
         $this->client->rpush(self::QUEUE_NAME, 'invalid data');
     }
-
 }
