@@ -3,6 +3,7 @@
 [![Build Status](http://img.shields.io/travis/kbond/Queue.svg?style=flat-square)](https://travis-ci.org/kbond/Queue)
 [![Scrutinizer Code Quality](http://img.shields.io/scrutinizer/g/kbond/Queue.svg?style=flat-square)](https://scrutinizer-ci.com/g/kbond/Queue/)
 [![Code Coverage](http://img.shields.io/scrutinizer/coverage/g/kbond/Queue.svg?style=flat-square)](https://scrutinizer-ci.com/g/kbond/Queue/)
+[![SensioLabs Insight](https://img.shields.io/sensiolabs/i/b2ec83cf-3dfa-4cce-b3bd-c3e2c3e320ff.svg?style=flat-square)](https://insight.sensiolabs.com/projects/b2ec83cf-3dfa-4cce-b3bd-c3e2c3e320ff)
 [![Latest Stable Version](http://img.shields.io/packagist/v/zenstruck/queue.svg?style=flat-square)](https://packagist.org/packages/zenstruck/queue)
 [![License](http://img.shields.io/packagist/l/zenstruck/queue.svg?style=flat-square)](https://packagist.org/packages/zenstruck/queue)
 
