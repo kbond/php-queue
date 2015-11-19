@@ -1,0 +1,32 @@
+{
+    "name": "zenstruck/queue",
+    "description": "Unified API for different queue services.",
+    "homepage": "http://zenstruck.com/projects/php-queue",
+    "keywords": ["queue", "amazon sqs", "beanstalkd", "redis"],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Kevin Bond",
+            "email": "kevinbond@gmail.com"
+        }
+    ],
+    "require": {
+        "simple-bus/asynchronous": "~2.0",
+        "beberlei/assert": "~2.0"
+    },
+    "require-dev": {
+        "sllh/php-cs-fixer-styleci-bridge": "~1.4",
+        "symfony/console": "~2.3"
+    },
+    "autoload": {
+        "psr-4": { "Zenstruck\\Queue\\": "src/" }
+    },
+    "autoload-dev": {
+        "psr-4": { "Zenstruck\\Queue\\Tests\\": "tests/" }
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.x-dev"
+        }
+    }
+}
