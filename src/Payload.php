@@ -33,18 +33,28 @@ final class Payload implements \JsonSerializable
             return null;
         }
 
-        if (!isset($decodedData['serialized_envelope']) || !isset($decodedData['metadata'])) {
+        return self::fromArray($decodedData);
+    }
+
+    /**
+     * @param array $array
+     *
+     * @return Payload|null
+     */
+    public static function fromArray(array $array)
+    {
+        if (!isset($array['serialized_envelope']) || !isset($array['metadata'])) {
             return null;
         }
 
         try {
-            \Assert\that($decodedData['serialized_envelope'])->string();
-            \Assert\that($decodedData['metadata'])->string();
+            \Assert\that($array['serialized_envelope'])->string();
+            \Assert\that($array['metadata'])->string();
         } catch (AssertionFailedException $e) {
             return null;
         }
 
-        return new self($decodedData['serialized_envelope'], $decodedData['metadata']);
+        return new self($array['serialized_envelope'], $array['metadata']);
     }
 
     /**

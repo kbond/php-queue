@@ -19,6 +19,7 @@ class JobTest extends TestCase
         $this->assertSame(2, $job->id());
         $this->assertNull($job->failedException());
         $this->assertFalse($job->isFailed());
+        $this->assertInstanceOf('Zenstruck\Queue\Payload', $job->payload());
     }
 
     /**
@@ -39,9 +40,9 @@ class JobTest extends TestCase
     public function can_json_encode()
     {
         $job = $this->createJob();
-        $this->assertSame('{"metadata":"foo metadata","id":2,"failed":false,"attempts":1}', json_encode($job));
+        $this->assertSame('{"metadata":"foo metadata","failed":false,"attempts":1}', json_encode($job));
 
         $job->fail(new \Exception());
-        $this->assertSame('{"metadata":"foo metadata","id":2,"failed":true,"attempts":1}', json_encode($job));
+        $this->assertSame('{"metadata":"foo metadata","failed":true,"attempts":1}', json_encode($job));
     }
 }
