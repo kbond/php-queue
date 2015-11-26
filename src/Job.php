@@ -13,9 +13,9 @@ final class Job implements \JsonSerializable
     private $failedException;
 
     /**
-     * @param Payload         $payload
-     * @param int             $attempts
-     * @param string|int|null $id
+     * @param Payload $payload
+     * @param int     $attempts
+     * @param mixed   $id
      */
     public function __construct(Payload $payload, $attempts = 1, $id = null)
     {
@@ -41,6 +41,14 @@ final class Job implements \JsonSerializable
     }
 
     /**
+     * @return Payload
+     */
+    public function payload()
+    {
+        return $this->payload;
+    }
+
+    /**
      * @return int
      */
     public function attempts()
@@ -49,7 +57,7 @@ final class Job implements \JsonSerializable
     }
 
     /**
-     * @return int|null|string
+     * @return mixed
      */
     public function id()
     {
@@ -87,7 +95,6 @@ final class Job implements \JsonSerializable
     {
         return [
             'metadata' => $this->metadata(),
-            'id' => $this->id(),
             'failed' => $this->isFailed(),
             'attempts' => $this->attempts(),
         ];
