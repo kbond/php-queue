@@ -6,6 +6,7 @@ use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Tester\CommandTester;
 use Zenstruck\Queue\Bridge\Symfony\Console\SubscriberCommand;
 use Zenstruck\Queue\Subscriber;
+use Zenstruck\Queue\SubscriberRegistry;
 use Zenstruck\Queue\Tests\TestCase;
 
 /**
@@ -21,8 +22,24 @@ class SubscriberCommandTest extends TestCase
     public function command_exits_with_proper_reason($arguments, $expectedReason)
     {
         $tester = $this->createCommandTester();
-        $tester->execute(array_merge(['command' => 'my:command'], $arguments));
+        $tester->execute(array_merge([
+                'command' => 'zenstruck:queue:subscribe',
+                'subscriber' => 'foo-subscribers',
+            ],
+            $arguments
+        ));
         $this->assertContains($expectedReason, $tester->getDisplay());
+    }
+
+    /**
+     * @test
+     */
+    public function can_list_available_subscribers_with_no_arguments()
+    {
+        $tester = $this->createCommandTester();
+        $tester->execute(['command' => 'zenstruck:queue:subscribe']);
+        $this->assertContains('Available Subscribers', $tester->getDisplay());
+        $this->assertContains('- foo-subscribers', $tester->getDisplay());
     }
 
     public function argumentProvider()
@@ -39,8 +56,8 @@ class SubscriberCommandTest extends TestCase
     {
         $subscriber = new Subscriber($this->mockDriver(), $this->mockSerializedEnvelopeConsumer());
         $application = new Application();
-        $application->add(new SubscriberCommand($subscriber, 'my:command', 'my command description'));
+        $application->add(new SubscriberCommand(new SubscriberRegistry(['foo-subscribers' => $subscriber])));
 
-        return new CommandTester($application->find('my:command'));
+        return new CommandTester($application->find('zenstruck:queue:subscribe'));
     }
 }
